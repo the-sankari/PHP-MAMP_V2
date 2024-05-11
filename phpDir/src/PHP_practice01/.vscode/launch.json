@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/s2400073/Desktop/React24k/PHP-MAMP/phpDir/src/PHP_practice01",
+      "program": "/Users/s2400073/Desktop/React24k/PHP-MAMP/phpDir/src/PHP_practice01/build/Debug/outDebug"
+    }
+  ]
+}
