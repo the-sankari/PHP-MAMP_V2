@@ -1,6 +1,8 @@
 <?php include 'header.php'?>
 <?php include 'create_short_url.php'?>
 <!-- Form to input long URL and submit for shortening -->
+<div class="container">
+
 <form action="index.php" method="POST">
     <div class="form-floating mb-3">
         <!-- Input field for long URL -->
@@ -79,6 +81,7 @@ if (!$result) {
     <div class="toast-body">
         <p>note</p>
     </div>
+</div>
 </div>
 </div>
 

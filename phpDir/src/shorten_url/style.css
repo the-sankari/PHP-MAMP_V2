@@ -4,7 +4,7 @@
   padding: 0;
   box-sizing: border-box;
 }
-body{
+body {
   height: 100%;
   width: 100%;
   background-color: #333;
@@ -47,9 +47,7 @@ button.btn-add {
   color: #fff;
 }
 
-
-
-.theme-toggle{
+.theme-toggle {
   background-color: #333;
   width: 60px;
   height: 60px;
@@ -62,17 +60,15 @@ button.btn-add {
   right: 10px;
   cursor: pointer;
 }
-
-footer{
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #5f0b8f;
+.footer_div {
+  background-color: #333;
   color: #fff;
+  padding: 10px;
+  .footer-text {
+    text-align: center;
+  }
+  .footer-text a {
+    color: #fff;
+    text-decoration: none;
+  }
 }
-
-
