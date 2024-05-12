@@ -1,0 +1,20 @@
+# Ignore the vendor folder and its contents
+/vendor/
+
+# Ignore the.env file
+.env
+
+# Ignore the composer.lock file
+composer.lock
+
+# Ignore the node_modules folder and its contents
+/node_modules/
+
+# Ignore the npm-debug.log file
+npm-debug.log
+
+# Ignore the.DS_Store files on MacOS
+.DS_Store
+
+# Ignore the Thumbs.db files on Windows
+Thumbs.db

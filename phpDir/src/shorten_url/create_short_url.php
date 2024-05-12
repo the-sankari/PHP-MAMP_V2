@@ -1,27 +1,73 @@
 <?php
+require_once "DBConnect.php";
+require_once 'config.php';
+$short_url = '';
+// Check if the form was submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+// URL to the Unelma.IO API
+    $url = 'https://unelma.io/api/v1/link';
+// Access token for the Unelma.IO API
+    $accessToken = $accessToken;
 
-// Replace with your own API key
-$apiKey = '17|LZys2hTTIIGiY90YI9y8Gkv1Ul3OlAGghoto2fV401882225';
+// Collect the long URL from the form input
+    $longUrl = $_POST['longUrl'];
 
-// Function to shorten a URL using the Unelma API
-function shortenUrl($longUrl, $apiKey)
-{
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, 'https://unelma.io/api/v1');
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('url' => $longUrl, 'api_key' => $apiKey)));
+// Prepare the data to be sent in the POST request
+    $data = [
+        "type" => "direct",
+        "password" => null,
+        "active" => true,
+        "expires_at" => "2024-06-06",
+        "activates_at" => "2024-03-25",
+        "utm" => "utm_source=google&utm_medium=banner",
+        "domain_id" => null,
+        "long_url" => $longUrl,
+    ];
+
+// Initialize cURL session
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'accept: application/json',
+        'Content-Type: application/json',
+        'Authorization: Bearer ' . $accessToken,
+    ]);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+
+// Execute the POST request
     $response = curl_exec($ch);
+
+// Check for errors
+    if (curl_errno($ch)) {
+        echo 'Error:' . curl_error($ch);
+    } else {
+        // Decode the response
+        $responseDecoded = json_decode($response, true);
+        // Check if the 'link' key and 'short_url' subkey exist before trying to access it
+        if (isset($responseDecoded['link']) && isset($responseDecoded['link']['short_url'])) {
+            // Output the shortened URL
+            $short_url = $responseDecoded['link']['short_url'];
+
+        } else {
+            // Handle the case where 'short_url' key doesn't exist
+            echo 'The key "short_url" does not exist in the response.';
+        }
+    }
+
+    if (!empty($longUrl) && !empty($short_url)) {
+        $stmt = $conn->prepare("INSERT INTO  url (long_url, short_url) VALUES(?,?) ");
+        if (!$stmt) {
+            echo "Prepare failed: " . $conn->error;
+        }
+        $stmt->bind_param("ss", $longUrl, $short_url);
+        if ($stmt->execute()) {
+            header('location:index.php?insert_msg=Data inserted successfully');
+        } else {
+            echo "Error: " . $stmt->error;
+        }
+    }
+
+// Close cURL session
     curl_close($ch);
-    return json_decode($response)->short_url;
 }
-
-// Get the long URL from the form
-$longUrl = $_POST['long-url'];
-
-// Shorten the URL using the Unelma API 
-
-
-//  17|LZys2hTTIIGiY90YI9y8Gkv1Ul3OlAGghoto2fV401882225
-$shortUrl = shortenUrl($longUrl, $apiKey);
-
